@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE project>
+<!-- ====================================================================== 
+     May 7th, 2013                                                  
+
+     Emily-Basic
+     Basic IRC commands for Emily
+                   
+     Jonathan Rouillard                                                               
+     ====================================================================== -->
+<project name="Emily-Basic" default="default">
+	<description>
+		An IRC Bot done for fun.
+    </description>
+
+	<property name="src" location="src" />
+	<property name="lib" location="lib" />
+	<property name="build" location="build" />
+	<property name="dist" location="dist" />
+
+	<!-- ================================= 
+          target: clean              
+         ================================= -->
+	<target name="clean" description="Cleans the build directories">
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+
+	<!-- - - - - - - - - - - - - - - - - - 
+          target: init                      
+         - - - - - - - - - - - - - - - - - -->
+	<target name="init">
+		<!-- Set the timestamp -->
+		<tstamp />
+		<!-- Create build directory -->
+		<mkdir dir="${build}" />
+	</target>
+
+	<!-- ================================= 
+          target: compile              
+         ================================= -->
+	<target name="compile" depends="init" description="Compiles the classes in the project">
+		<mkdir dir="${build}" />
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac srcdir="${src}" destdir="${build}" includeantruntime="false">
+			<classpath>
+				<pathelement location="lib/Emily.jar" />
+			</classpath>
+		</javac>
+	</target>
+
+	<!-- ================================= 
+          target: jar              
+         ================================= -->
+	<target name="jar" depends="compile" description="Builds a jar archive of the project">
+		<jar destfile="${dist}/roujo.emily.plugins.basic.jar" basedir="${build}" />
+	</target>
+
+
+	<!-- ================================= 
+          target: default              
+         ================================= -->
+	<target name="default" depends="jar" description="Default compilation" />
+
+</project>
