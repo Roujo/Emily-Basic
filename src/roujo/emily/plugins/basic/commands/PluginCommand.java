@@ -28,10 +28,18 @@ public class PluginCommand extends Command {
 		
 		switch(arguments[0].toLowerCase()) {
 		case "load":
+			if(arguments.length != 3) {
+				sendUsageBack(context);
+				return false;
+			}
 			return loadPlugin(context, arguments);
 		case "unload":
 			return unloadPlugin(context, arguments);
 		case "reload":
+			if(arguments.length != 3) {
+				sendUsageBack(context);
+				return false;
+			}
 			return unloadPlugin(context, arguments) && loadPlugin(context, arguments);
 		default:
 			sendUsageBack(context);
@@ -40,11 +48,6 @@ public class PluginCommand extends Command {
 	}
 
 	private boolean loadPlugin(MessageContext context, String[] arguments) {
-		if(arguments.length != 3) {
-			sendUsageBack(context);
-			return false;
-		}
-		
 		String pluginName = arguments[1];
 		String pluginFileName = arguments[2];
 		File pluginFile = new File("plugins/" + pluginFileName);
