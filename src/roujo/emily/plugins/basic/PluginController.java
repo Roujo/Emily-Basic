@@ -34,6 +34,7 @@ public class PluginController implements Plugin, CommandManager {
 		commands.add(new JoinCommand());
 		commands.add(new LionCommand());
 		commands.add(new PartCommand());
+		commands.add(new PluginCommand());
 		commands.add(new QuitCommand());
 		commands.add(new RollCommand());
 		commands.add(new SlapCommand());
