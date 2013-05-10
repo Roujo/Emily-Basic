@@ -36,11 +36,7 @@ public class PluginCommand extends Command {
 		case "unload":
 			return unloadPlugin(context, arguments);
 		case "reload":
-			if(arguments.length != 3) {
-				sendUsageBack(context);
-				return false;
-			}
-			return unloadPlugin(context, arguments) && loadPlugin(context, arguments);
+			return reloadPlugin(context, arguments);
 		default:
 			sendUsageBack(context);
 			return false;
@@ -75,6 +71,18 @@ public class PluginCommand extends Command {
 			return true;
 		} else {
 			sendMessageBack(context, "Plugin " + pluginName + " failed to unload.");
+			return false;
+		}
+	}
+	
+	private boolean reloadPlugin(MessageContext context, String[] arguments) {
+		String pluginName = arguments[1];
+		sendMessageBack(context, "Reloading plugin " + pluginName + "...");
+		if(PluginManager.getInstance().reloadPlugin(pluginName)) {
+			sendMessageBack(context, "Plugin " + pluginName + " reloaded!");
+			return true;
+		} else {
+			sendMessageBack(context, "Plugin " + pluginName + " failed to reload.");
 			return false;
 		}
 	}
