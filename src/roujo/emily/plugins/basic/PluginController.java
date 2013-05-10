@@ -19,8 +19,10 @@ public class PluginController implements Plugin, CommandManager {
 	@Override
 	public boolean processMessage(MessageContext context) {
 		for(Command command : commands) {
-			if(command.getPattern().matcher(context.getMessage()).matches())
-				return command.execute(context);
+			if(command.getPattern().matcher(context.getMessage()).matches()) {
+				command.execute(context);
+				return true;
+			}
 		}
 		return false;
 	}
