@@ -10,6 +10,8 @@ import roujo.emily.core.extensibility.capabilities.CommandManager;
 import roujo.emily.plugins.basic.commands.*;
 
 public class PluginController implements Plugin, CommandManager {
+	private String pluginName = "Basic";
+	
 	private List<Command> commands;
 	
 	public PluginController() {
@@ -48,6 +50,11 @@ public class PluginController implements Plugin, CommandManager {
 	public boolean unload() {
 		commands.clear();
 		return true;
+	}
+
+	@Override
+	public String getName() {
+		return pluginName;
 	}
 
 }
