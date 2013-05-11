@@ -11,10 +11,10 @@ public class RollCommand extends Command {
 	private final Pattern dicePattern;
 	
 	public RollCommand() {
-		super("roll", "roll (?<args>[0-9]+d[0-9]+)",
+		super("roll", "roll (?<args>[0-9]+d[1-9][0-9]*((?:\\+|-)[0-9]+)?)",
 				"Rolls a certain amount of dice and gives the result.",
 				"dice 2d20", false);
-		dicePattern = Pattern.compile("([0-9]+)d([0-9]+)");
+		dicePattern = Pattern.compile("([0-9]+)d([1-9][0-9]*)((?:\\+|-)[0-9]+)?");
 	}
 
 	@Override
@@ -33,13 +33,24 @@ public class RollCommand extends Command {
 
 		int diceNumber = Integer.parseInt(matcher.group(1));
 		int diceType = Integer.parseInt(matcher.group(2));
-		Random random = new Random();
 		int total = 0;
+		if(matcher.groupCount() > 2 && matcher.group(3) != null) {
+			total += Integer.parseInt(matcher.group(3));
+		}
+		int[] results = new int[diceNumber];
+		Random random = new Random();
 		for (int i = 0; i < diceNumber; ++i) {
-			total += random.nextInt(diceType) + 1;
+			results[i] = random.nextInt(diceType) + 1; 
+			total += results[i];
 		}
 		String response = "Results of " + arguments + ": " + total;
+		StringBuilder rolls = new StringBuilder();
+		rolls.append(results[0]);
+		for(int i = 1; i < results.length; ++i)
+			rolls.append(", " + results[i]);
+		String details = "Rolls: " + rolls.toString();
 		sendMessageBack(context, response);
+		sendMessageBack(context, details);
 		return true;
 	}
 
