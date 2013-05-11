@@ -56,8 +56,11 @@ public class RegexCommand extends Command {
 		Matcher matcher = patterns.get(context.getUser()).matcher(testedString);
 		if(matcher.matches()) {
 			sendMessageBack(context, "Match!");
-			for(int i = 1; i <= matcher.groupCount(); ++i)
-				sendMessageBack(context, "Group #" + i + ": " + matcher.group(i));
+			for(int i = 1; i <= matcher.groupCount(); ++i) {
+				String group = matcher.group(i);
+				if(group != null)
+					sendMessageBack(context, "Group #" + i + ": " + group);
+			}
 		} else {
 			sendMessageBack(context, "No match!");
 		}
