@@ -21,17 +21,13 @@ public class PluginCommand extends Command {
 		}
 		
 		String[] arguments = rawArguments.split(" ");
-		if(arguments.length < 2) {
+		if(arguments.length != 2) {
 			sendUsageBack(context);
 			return false;
 		}
 		
 		switch(arguments[0].toLowerCase()) {
 		case "load":
-			if(arguments.length != 3) {
-				sendUsageBack(context);
-				return false;
-			}
 			return loadPlugin(context, arguments);
 		case "unload":
 			return unloadPlugin(context, arguments);
@@ -44,8 +40,7 @@ public class PluginCommand extends Command {
 	}
 
 	private boolean loadPlugin(MessageContext context, String[] arguments) {
-		String pluginName = arguments[1];
-		String pluginFileName = arguments[2];
+		String pluginFileName = arguments[1];
 		File pluginFile = new File("plugins/" + pluginFileName);
 		if(!pluginFile.exists()) {
 			sendMessageBack(context, "The file " + pluginFileName + " isn't in the \"plugins\" directory.");
@@ -53,12 +48,13 @@ public class PluginCommand extends Command {
 		}
 		
 		// So the file exists, let's try to load it
-		sendMessageBack(context, "Loading plugin " + pluginName + " from " + pluginFileName + "...");
-		if(PluginManager.getInstance().loadPlugin(pluginName, pluginFile)) {
+		sendMessageBack(context, "Loading plugin from " + pluginFileName + "...");
+		String pluginName = PluginManager.getInstance().loadPlugin(pluginFile);
+		if(pluginName != null) {
 			sendMessageBack(context, "Plugin " + pluginName + " loaded!");
 			return true;
 		} else {
-			sendMessageBack(context, "Plugin " + pluginName + " failed to load.");
+			sendMessageBack(context, "Failed to load a plugin from " + pluginFileName);
 			return false;
 		}
 	}
