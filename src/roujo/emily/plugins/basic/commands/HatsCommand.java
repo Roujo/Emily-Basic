@@ -6,7 +6,7 @@ import roujo.emily.core.commands.Command;
 public class HatsCommand extends Command {
 
 	public HatsCommand() {
-		super("hats", ".*hats.*", "Who knows?", "hats", false);
+		super("hats", ".*(?i)hats(?-i).*", "Who knows?", "hats", false);
 	}
 
 	@Override
