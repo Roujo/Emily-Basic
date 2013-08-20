@@ -11,19 +11,22 @@ import roujo.emily.plugins.basic.commands.*;
 
 public class PluginController implements Plugin, CommandManager {
 	private String pluginName = "Basic";
-	
+
 	private List<Command> commands;
-	
+
 	public PluginController() {
 		commands = new ArrayList<Command>();
 	}
 
 	@Override
 	public boolean processMessage(MessageContext context) {
-		for(Command command : commands) {
-			if(command.getPattern().matcher(context.getMessage()).matches()) {
-				command.execute(context);
-				return true;
+		if (context.wasPrefixed()) {
+			for (Command command : commands) {
+				if (command.getPattern().matcher(context.getMessage())
+						.matches()) {
+					command.execute(context);
+					return true;
+				}
 			}
 		}
 		return false;
