@@ -4,8 +4,8 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import roujo.emily.core.MessageContext;
-import roujo.emily.core.commands.Command;
+import roujo.emily.core.contexts.CommandContext;
+import roujo.emily.core.extensibility.util.Command;
 
 public class RollCommand extends Command {
 	private final Pattern dicePattern;
@@ -18,7 +18,7 @@ public class RollCommand extends Command {
 	}
 
 	@Override
-	public boolean execute(MessageContext context) {
+	public boolean execute(CommandContext context) {
 		String arguments = getArguments(context);
 		if (arguments.equals("")) {
 			sendUsageBack(context);

@@ -2,8 +2,9 @@ package roujo.emily.plugins.basic.commands;
 
 import org.pircbotx.PircBotX;
 
-import roujo.emily.core.MessageContext;
-import roujo.emily.core.commands.Command;
+import roujo.emily.core.State;
+import roujo.emily.core.contexts.CommandContext;
+import roujo.emily.core.extensibility.util.Command;
 
 public class QuitCommand extends Command {
 
@@ -12,10 +13,10 @@ public class QuitCommand extends Command {
 	}
 
 	@Override
-	public boolean execute(MessageContext context) {
+	public boolean execute(CommandContext context) {
 		PircBotX bot = context.getBot();
-		sendMessageBack(context, "Alright, off I go!");
-		context.getState().setShouldQuit(true);
+		sendMessageBack(context, "Alright, off I go!", true);
+		State.INSTANCE.setShouldQuit(true);
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {

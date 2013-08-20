@@ -1,11 +1,11 @@
-package roujo.emily.plugins.basic.commands;
+package roujo.emily.plugins.basic.reactions;
 
 import java.util.Calendar;
 
 import org.pircbotx.PircBotX;
 
-import roujo.emily.core.MessageContext;
-import roujo.emily.core.commands.Command;
+import roujo.emily.core.contexts.CommandContext;
+import roujo.emily.core.extensibility.util.Command;
 
 public class LionCommand extends Command {
 	private Calendar nextLionAllowed;
@@ -15,14 +15,12 @@ public class LionCommand extends Command {
 	}
 
 	@Override
-	public boolean execute(MessageContext context) {
+	public boolean execute(CommandContext context) {
 		if (nextLionAllowed == null
 				|| Calendar.getInstance().after(nextLionAllowed)) {
-			String target = context.isPrivateMessage() ? context.getUser()
-					.getNick() : context.getChannel().getName();
 			PircBotX bot = context.getBot();
-			bot.sendMessage(target, "OMG IT'S A LION GET IN THE CAR!");
-			bot.sendAction(target, "gets in the car.");
+			bot.sendMessage(context.getOrigin(), "OMG IT'S A LION GET IN THE CAR!");
+			bot.sendAction(context.getOrigin(), "gets in the car.");
 			nextLionAllowed = Calendar.getInstance();
 			nextLionAllowed.add(Calendar.MINUTE, 5);
 			return true;

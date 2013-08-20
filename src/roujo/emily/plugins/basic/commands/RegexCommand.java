@@ -8,8 +8,8 @@ import java.util.regex.PatternSyntaxException;
 
 import org.pircbotx.User;
 
-import roujo.emily.core.MessageContext;
-import roujo.emily.core.commands.Command;
+import roujo.emily.core.contexts.CommandContext;
+import roujo.emily.core.extensibility.util.Command;
 
 public class RegexCommand extends Command {
 	private final Map<User, Pattern> patterns;
@@ -21,7 +21,7 @@ public class RegexCommand extends Command {
 	}
 
 	@Override
-	public boolean execute(MessageContext context) {
+	public boolean execute(CommandContext context) {
 		String arguments = getArguments(context);
 		if(arguments.startsWith("compile ") && arguments.length() > "compile ".length()) {
 			return compilePattern(context, arguments);
@@ -33,11 +33,11 @@ public class RegexCommand extends Command {
 		}
 	}
 	
-	public boolean compilePattern(MessageContext context, String arguments) {
+	public boolean compilePattern(CommandContext context, String arguments) {
 		try {
 			String patternString = arguments.substring("compile ".length());
-			patterns.put(context.getUser(), Pattern.compile(patternString));
-			sendMessageBack(context, "Pattern compiled!");
+			patterns.put(context.getSender(), Pattern.compile(patternString));
+			sendMessageBack(context, "Pattern compiled!", true);
 			return true;
 		} catch (PatternSyntaxException e) {
 			sendMessageBack(context, "The pattern was invalid.");
@@ -46,16 +46,16 @@ public class RegexCommand extends Command {
 		
 	}
 	
-	public boolean matchString(MessageContext context, String arguments) {
-		if(!patterns.containsKey(context.getUser())) {
-			sendMessageBack(context, "You have to compile a pattern first!");
+	public boolean matchString(CommandContext context, String arguments) {
+		if(!patterns.containsKey(context.getSender())) {
+			sendMessageBack(context, "You have to compile a pattern first!", true);
 			return false;
 		}
 		
 		String testedString = arguments.substring("match ".length());
-		Matcher matcher = patterns.get(context.getUser()).matcher(testedString);
+		Matcher matcher = patterns.get(context.getSender()).matcher(testedString);
 		if(matcher.matches()) {
-			sendMessageBack(context, "Match!");
+			sendMessageBack(context, "Match!", true);
 			for(int i = 1; i <= matcher.groupCount(); ++i) {
 				String group = matcher.group(i);
 				if(group != null)

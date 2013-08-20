@@ -1,7 +1,7 @@
-package roujo.emily.plugins.basic.commands;
+package roujo.emily.plugins.basic.reactions;
 
-import roujo.emily.core.MessageContext;
-import roujo.emily.core.commands.Command;
+import roujo.emily.core.contexts.CommandContext;
+import roujo.emily.core.extensibility.util.Command;
 
 public class HatsCommand extends Command {
 
@@ -10,7 +10,7 @@ public class HatsCommand extends Command {
 	}
 
 	@Override
-	public boolean execute(MessageContext context) {
+	public boolean execute(CommandContext context) {
 		sendMessageBack(context, "no u");
 		return true;
 	}

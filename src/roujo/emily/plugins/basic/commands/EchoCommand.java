@@ -1,7 +1,7 @@
 package roujo.emily.plugins.basic.commands;
 
-import roujo.emily.core.MessageContext;
-import roujo.emily.core.commands.Command;
+import roujo.emily.core.contexts.CommandContext;
+import roujo.emily.core.extensibility.util.Command;
 
 public class EchoCommand extends Command {
 
@@ -10,12 +10,9 @@ public class EchoCommand extends Command {
 	}
 
 	@Override
-	public boolean execute(MessageContext context) {
+	public boolean execute(CommandContext context) {
 		String echoMessage = getArguments(context);
-		if (context.isPrivateMessage())
-			context.getBot().sendMessage(context.getUser(), echoMessage);
-		else
-			context.getBot().sendMessage(context.getChannel(), echoMessage);
+		context.getBot().sendMessage(context.getOrigin(), echoMessage);
 		return true;
 	}
 

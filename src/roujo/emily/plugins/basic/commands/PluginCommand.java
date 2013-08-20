@@ -2,9 +2,9 @@ package roujo.emily.plugins.basic.commands;
 
 import java.io.File;
 
-import roujo.emily.core.MessageContext;
-import roujo.emily.core.commands.Command;
+import roujo.emily.core.contexts.CommandContext;
 import roujo.emily.core.extensibility.PluginManager;
+import roujo.emily.core.extensibility.util.Command;
 
 public class PluginCommand extends Command {	
 	public PluginCommand() {
@@ -12,7 +12,7 @@ public class PluginCommand extends Command {
 	}
 	
 	@Override
-	public boolean execute(MessageContext context) {
+	public boolean execute(CommandContext context) {
 		// Validating arguments
 		String rawArguments = getArguments(context);
 		if(rawArguments == "") {
@@ -39,7 +39,7 @@ public class PluginCommand extends Command {
 		}
 	}
 
-	private boolean loadPlugin(MessageContext context, String[] arguments) {
+	private boolean loadPlugin(CommandContext context, String[] arguments) {
 		String pluginFileName = arguments[1];
 		File pluginFile = new File("plugins/" + pluginFileName);
 		if(!pluginFile.exists()) {
@@ -49,9 +49,9 @@ public class PluginCommand extends Command {
 		
 		// So the file exists, let's try to load it
 		sendMessageBack(context, "Loading plugin from " + pluginFileName + "...");
-		String pluginName = PluginManager.getInstance().loadPlugin(pluginFile);
+		String pluginName = PluginManager.INSTANCE.loadPlugin(pluginFile);
 		if(pluginName != null) {
-			sendMessageBack(context, "Plugin " + pluginName + " loaded!");
+			sendMessageBack(context, "Plugin " + pluginName + " loaded!", true);
 			return true;
 		} else {
 			sendMessageBack(context, "Failed to load a plugin from " + pluginFileName);
@@ -59,11 +59,11 @@ public class PluginCommand extends Command {
 		}
 	}
 
-	private boolean unloadPlugin(MessageContext context, String[] arguments) {
+	private boolean unloadPlugin(CommandContext context, String[] arguments) {
 		String pluginName = arguments[1];
 		sendMessageBack(context, "Unloading plugin " + pluginName + "...");
-		if(PluginManager.getInstance().unloadPlugin(pluginName)) {
-			sendMessageBack(context, "Plugin " + pluginName + " unloaded!");
+		if(PluginManager.INSTANCE.unloadPlugin(pluginName)) {
+			sendMessageBack(context, "Plugin " + pluginName + " unloaded!", true);
 			return true;
 		} else {
 			sendMessageBack(context, "Plugin " + pluginName + " failed to unload.");
@@ -71,11 +71,11 @@ public class PluginCommand extends Command {
 		}
 	}
 	
-	private boolean reloadPlugin(MessageContext context, String[] arguments) {
+	private boolean reloadPlugin(CommandContext context, String[] arguments) {
 		String pluginName = arguments[1];
 		sendMessageBack(context, "Reloading plugin " + pluginName + "...");
-		if(PluginManager.getInstance().reloadPlugin(pluginName)) {
-			sendMessageBack(context, "Plugin " + pluginName + " reloaded!");
+		if(PluginManager.INSTANCE.reloadPlugin(pluginName)) {
+			sendMessageBack(context, "Plugin " + pluginName + " reloaded!", true);
 			return true;
 		} else {
 			sendMessageBack(context, "Plugin " + pluginName + " failed to reload.");

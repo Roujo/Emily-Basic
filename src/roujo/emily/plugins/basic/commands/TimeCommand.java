@@ -1,7 +1,7 @@
 package roujo.emily.plugins.basic.commands;
 
-import roujo.emily.core.MessageContext;
-import roujo.emily.core.commands.Command;
+import roujo.emily.core.contexts.CommandContext;
+import roujo.emily.core.extensibility.util.Command;
 
 public class TimeCommand extends Command {
 
@@ -10,9 +10,9 @@ public class TimeCommand extends Command {
 	}
 
 	@Override
-	public boolean execute(MessageContext context) {
+	public boolean execute(CommandContext context) {
 		String time = new java.util.Date().toString();
-		sendMessageBack(context, "The time is now " + time);
+		sendMessageBack(context, "The time is now " + time, true);
 		return true;
 	}
 

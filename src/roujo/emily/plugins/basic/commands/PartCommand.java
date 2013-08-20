@@ -3,8 +3,8 @@ package roujo.emily.plugins.basic.commands;
 import org.pircbotx.Channel;
 import org.pircbotx.PircBotX;
 
-import roujo.emily.core.MessageContext;
-import roujo.emily.core.commands.Command;
+import roujo.emily.core.contexts.CommandContext;
+import roujo.emily.core.extensibility.util.Command;
 
 public class PartCommand extends Command {
 
@@ -13,7 +13,7 @@ public class PartCommand extends Command {
 	}
 
 	@Override
-	public boolean execute(MessageContext context) {
+	public boolean execute(CommandContext context) {
 		String arguments = getArguments(context);
 		if(arguments.equals("")) {
 			sendUsageBack(context);
@@ -24,7 +24,7 @@ public class PartCommand extends Command {
 		PircBotX bot = context.getBot();
 		for(Channel channel : bot.getChannels()) {
 			if(channel.getName().equals(args[0])) {
-				sendMessageBack(context, "Alright!");
+				sendMessageBack(context, "Alright!", true);
 				bot.sendMessage(args[0], "See you later!");
 				if(args.length > 1)
 					bot.partChannel(channel, args[1]);
