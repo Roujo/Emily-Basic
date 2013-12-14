@@ -44,13 +44,16 @@ public class RollCommand extends Command {
 			total += results[i];
 		}
 		String response = "Results of " + arguments + ": " + total;
-		StringBuilder rolls = new StringBuilder();
-		rolls.append(results[0]);
-		for(int i = 1; i < results.length; ++i)
-			rolls.append(", " + results[i]);
-		String details = "Rolls: " + rolls.toString();
+		
+		// Send detailed rolls if there was more than one
+		if(diceNumber > 1) {
+			StringBuilder rolls = new StringBuilder();
+			rolls.append(results[0]);
+			for(int i = 1; i < results.length; ++i)
+				rolls.append(", " + results[i]);
+			response += " (Rolls: " + rolls.toString() + ")";
+		}
 		sendMessageBack(context, response);
-		sendMessageBack(context, details);
 		return true;
 	}
 
