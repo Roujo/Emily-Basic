@@ -33,6 +33,12 @@ public class RollCommand extends Command {
 
 		int diceNumber = Integer.parseInt(matcher.group(1));
 		int diceType = Integer.parseInt(matcher.group(2));
+
+		if(diceType > 1000) {
+			sendMessageBack(context, "I don't think they make dice that big.");
+			return false;
+		}
+
 		int total = 0;
 		if(matcher.groupCount() > 2 && matcher.group(3) != null) {
 			total += Integer.parseInt(matcher.group(3));
@@ -48,11 +54,20 @@ public class RollCommand extends Command {
 		// Send detailed rolls if there was more than one
 		if(diceNumber > 1) {
 			StringBuilder rolls = new StringBuilder();
+			rolls.append("Rolls: ");
 			rolls.append(results[0]);
 			for(int i = 1; i < results.length; ++i)
 				rolls.append(", " + results[i]);
-			response += " (Rolls: " + rolls.toString() + ")";
+			rolls.append(".");
+			// If there were many rolls, send them as a PM instead
+			// of spamming the channel
+			if(diceNumber > 20 && !context.isPrivateMessage()) {
+				context.getBot().sendMessage(context.getSender(), rolls.toString());
+			} else {
+				response += " " + rolls.toString();
+			}
 		}
+
 		sendMessageBack(context, response);
 		return true;
 	}
