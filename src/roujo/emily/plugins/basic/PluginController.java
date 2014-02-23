@@ -7,6 +7,7 @@ import roujo.emily.core.contexts.CommandContext;
 import roujo.emily.core.contexts.MessageContext;
 import roujo.emily.core.extensibility.Plugin;
 import roujo.emily.core.extensibility.util.Command;
+import roujo.emily.core.extensibility.util.Reaction;
 import roujo.emily.plugins.basic.commands.EchoCommand;
 import roujo.emily.plugins.basic.commands.JoinCommand;
 import roujo.emily.plugins.basic.commands.PartCommand;
@@ -18,20 +19,28 @@ import roujo.emily.plugins.basic.commands.SlapCommand;
 import roujo.emily.plugins.basic.commands.TellCommand;
 import roujo.emily.plugins.basic.commands.TimeCommand;
 import roujo.emily.plugins.basic.commands.VoiceCommand;
+import roujo.emily.plugins.basic.reactions.HatsCommand;
+import roujo.emily.plugins.basic.reactions.LionCommand;
 
 public class PluginController extends Plugin {
 	private static final String PLUGIN_NAME = "Basic";
 
 	private List<Command> commands;
+    private List<Reaction> reactions;
 
 	public PluginController() {
 		super(PLUGIN_NAME);
 		commands = new LinkedList<Command>();
+        reactions = new LinkedList<Reaction>();
 	}
 
 	@Override
 	public void onMessage(MessageContext context) {
-		// TODO: Bring back the Hats and Lions!
+        for(Reaction reaction : reactions) {
+            if(reaction.getPattern().matcher(context.getMessage()).matches()) {
+                reaction.react(context);
+            }
+        }
 	};
 
 	@Override
@@ -56,6 +65,9 @@ public class PluginController extends Plugin {
 		commands.add(new TellCommand());
 		commands.add(new TimeCommand());
 		commands.add(new VoiceCommand());
+
+        reactions.add(new HatsCommand());
+        reactions.add(new LionCommand());
 		return true;
 	}
 
